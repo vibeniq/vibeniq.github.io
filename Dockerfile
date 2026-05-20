@@ -3,13 +3,8 @@ FROM node:22-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else \
-    npm ci; \
-  fi
+COPY package.json package-lock.json ./
+RUN npm ci
 
 # ── Stage 2: builder ─────────────────────────────────────────────────────────
 FROM node:22-alpine AS builder
@@ -20,12 +15,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN \
-  if [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && pnpm run build; \
-  else \
-    npm run build; \
-  fi
+RUN npm run build
 
 # ── Stage 3: runner ──────────────────────────────────────────────────────────
 FROM node:22-alpine AS runner
