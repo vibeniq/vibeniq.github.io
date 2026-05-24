@@ -1,161 +1,121 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Building2, Brain, Smartphone, Users, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const services = [
   {
-    icon: '⚙️',
-    title: 'Custom ERP',
-    description: 'Complex business processes implemented as configurable enterprise systems for finance, supply-chain, inventory and operations.',
+    Icon: Building2,
+    title: 'Enterprise Applications',
+    description:
+      'Comprehensive ERP, CRM, HRM, and E-commerce solutions for streamlined business operations.',
+    features: ['ERP Systems', 'CRM Platforms', 'HRM Solutions', 'E-commerce Stores'],
   },
   {
-    icon: '🧾',
-    title: 'HRM Solutions',
-    description: 'Modern HRM for payroll, attendance, onboarding and performance — tailored for your culture and scale.',
+    Icon: Brain,
+    title: 'AI Applications',
+    description:
+      'Intelligent AI solutions and conversational chatbots powered by cutting-edge machine learning.',
+    features: ['Machine Learning', 'AI Chatbots', 'Predictive Analytics', 'Neural Networks'],
   },
   {
-    icon: '🤝',
-    title: 'CRM & Sales Platforms',
-    description: 'Customer lifecycle management, sales automation, and reporting to increase revenue and retention.',
+    Icon: Smartphone,
+    title: 'Mobile Development',
+    description:
+      'Cross-platform mobile applications with native performance and seamless user experiences.',
+    features: ['iOS & Android', 'React Native', 'Flutter', 'Progressive Web Apps'],
   },
   {
-    icon: '📱',
-    title: 'Mobile Apps',
-    description: 'Native and cross-platform mobile development with performance, security and delightful UX.',
-  },
-  {
-    icon: '🤖',
-    title: 'AI & Chatbots',
-    description: 'Conversational assistants, recommendation engines and automation systems using modern ML tooling.',
-  },
-  {
-    icon: '🛒',
-    title: 'E-commerce Platforms',
-    description: 'Scalable storefronts and marketplaces with payment, inventory sync, and analytics.',
-  },
-  {
-    icon: '🧩',
-    title: 'Custom Software',
-    description: 'Domain-driven solutions built to integrate, adapt and grow with your business needs.',
-  },
-  {
-    icon: '🚀',
-    title: 'DevOps & Cloud',
-    description: 'Docker, Kubernetes, CI/CD pipelines, monitoring, SRE and cost-aware cloud operations.',
+    Icon: Users,
+    title: 'Technical Consultancies',
+    description:
+      'Expert technology consulting services to guide your digital transformation journey.',
+    features: [
+      'Architecture Design',
+      'Technology Strategy',
+      'Digital Transformation',
+      'Performance Optimization',
+    ],
   },
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
+};
+
 export function Services() {
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
-  const moveY = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const scaleValue = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
-
   return (
-    <section ref={sectionRef} id="services" className="relative py-24 px-6 overflow-hidden">
-      {/* Background Gradient */}
-      <motion.div
-        className="absolute inset-0 opacity-30"
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 50%, rgba(101, 84, 192, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 80%, rgba(101, 84, 192, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 40% 40%, rgba(101, 84, 192, 0.2) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 50%, rgba(101, 84, 192, 0.2) 0%, transparent 50%)',
-          ],
-        }}
-        transition={{ duration: 15, repeat: Infinity }}
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto">
+    <section id="services" className="relative py-24 px-6 overflow-hidden">
+      <div className="relative z-10 max-w-5xl mx-auto">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-balance">
+          <h2 className="text-5xl md:text-6xl font-bold mb-4 text-balance">
             <span className="gradient-text">Services</span> for every scale
           </h2>
-          <p className="text-lg text-foreground/70 max-w-2xl mx-auto text-balance">
+          <p className="text-lg text-foreground/60 max-w-2xl mx-auto text-balance">
             End-to-end product and platform engineering across industries.
           </p>
         </motion.div>
 
-        {/* Services Grid */}
+        {/* 2×2 Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          viewport={{ once: true, margin: '-80px' }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {services.map((service, idx) => (
+          {services.map(({ Icon, title, description, features }, idx) => (
             <motion.div
               key={idx}
               variants={cardVariants}
-              onMouseEnter={() => setHoveredIdx(idx)}
-              onMouseLeave={() => setHoveredIdx(null)}
-              whileHover={{ y: -10, scale: 1.05 }}
-              style={{ y: moveY }}
-              className="relative group"
+              whileHover="hover"
+              className="group relative rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm p-8 flex flex-col gap-6 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/10"
             >
-              {/* Card Background */}
-              <div
-                className={`absolute inset-0 rounded-xl transition-all duration-300 ${
-                  hoveredIdx === idx
-                    ? 'bg-gradient-to-br from-primary/20 to-accent/20 shadow-lg shadow-primary/50'
-                    : 'bg-card/50'
-                }`}
-              />
+              {/* Icon */}
+              <motion.div
+                className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center"
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 2.8 + idx * 0.3, repeat: Infinity, delay: idx * 0.45 }}
+                variants={{ hover: { scale: 1.18, y: -8 } }}
+              >
+                <Icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
+              </motion.div>
 
-              {/* Card Content */}
-              <div className="relative p-8 rounded-xl border border-border/50 backdrop-blur-sm h-full flex flex-col">
-                <motion.div
-                  animate={{ scale: hoveredIdx === idx ? 1.1 : 1 }}
-                  className="text-4xl mb-4"
-                >
-                  {service.icon}
-                </motion.div>
+              {/* Text */}
+              <div className="flex flex-col gap-2">
+                <h3 className="text-xl font-bold">{title}</h3>
+                <p className="text-foreground/60 text-sm leading-relaxed">{description}</p>
+              </div>
 
-                <h3 className="text-xl font-bold mb-3 text-balance">{service.title}</h3>
-                <p className="text-foreground/70 text-sm leading-relaxed flex-grow">{service.description}</p>
+              {/* Feature list */}
+              <ul className="flex flex-col gap-2">
+                {features.map((feat) => (
+                  <li key={feat} className="flex items-center gap-2.5 text-sm text-foreground/80">
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" strokeWidth={2} />
+                    {feat}
+                  </li>
+                ))}
+              </ul>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredIdx === idx ? 1 : 0 }}
-                  className="mt-6 inline-flex items-center gap-2 text-primary font-semibold text-sm"
-                >
-                  Learn more <span>→</span>
-                </motion.div>
+              {/* Learn More */}
+              <div className="mt-auto pt-2">
+                <button className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-primary transition-colors duration-200">
+                  Learn More
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
             </motion.div>
           ))}
