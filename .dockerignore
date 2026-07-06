@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Version control
+.git
+.gitignore
+
+# Dev / editor
+.DS_Store
+*.log
+npm-debug.log*
+.vscode
+.idea
+
+# Vercel / v0 tooling
+.vercel
+.snowflake
+.v0-trash
+__v0_*
+
+# Misc
+CNAME
+README.md
+Dockerfile
+.dockerignore
