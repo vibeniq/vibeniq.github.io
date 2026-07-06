@@ -9,119 +9,94 @@ const technologies = [
   'React',
   'MongoDB',
   'MySQL',
+  'PostgreSQL',
   'Docker',
   'Kubernetes',
   'Microservices',
   'GraphQL',
   'AWS',
-  'PostgreSQL',
   'Redis',
 ];
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as const },
+  },
+};
+
 export function TechStack() {
-  const [hoveredTech, setHoveredTech] = useState<number | null>(null);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.5 },
-    },
-  };
+  const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section id="tech" className="relative py-24 px-6 overflow-hidden">
-      {/* Background Animation */}
-      <motion.div
-        className="absolute inset-0 opacity-20"
-        animate={{
-          background: [
-            'radial-gradient(circle at 0% 0%, rgba(101, 84, 192, 0.3) 0%, transparent 50%)',
-            'radial-gradient(circle at 100% 100%, rgba(101, 84, 192, 0.3) 0%, transparent 50%)',
-            'radial-gradient(circle at 0% 0%, rgba(101, 84, 192, 0.3) 0%, transparent 50%)',
-          ],
-        }}
-        transition={{ duration: 15, repeat: Infinity }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto text-center">
+    <section id="tech" className="relative overflow-hidden py-26 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="mx-auto mb-14 max-w-2xl text-center"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--hairline)] bg-[var(--fill-2)] px-3 py-1 text-[12px] font-medium uppercase tracking-wider text-secondary">
+            Technology
+          </span>
+          <h2 className="mt-5 text-balance text-4xl font-semibold tracking-[-0.025em] md:text-5xl">
             <span className="gradient-text">Technology Stack</span>
           </h2>
-          <p className="text-lg text-foreground/70">
-            We ship using proven stacks for reliability and rapid iteration.
+          <p className="mt-4 text-balance text-base text-muted-foreground md:text-lg">
+            We ship on proven stacks for reliability and rapid iteration.
           </p>
         </motion.div>
 
-        {/* Technologies Grid */}
+        {/* Grid of glass tiles */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"
+          viewport={{ once: true, margin: '-80px' }}
+          className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
         >
           {technologies.map((tech, idx) => (
             <motion.div
-              key={idx}
+              key={tech}
               variants={itemVariants}
-              onMouseEnter={() => setHoveredTech(idx)}
-              onMouseLeave={() => setHoveredTech(null)}
-              whileHover={{ scale: 1.1, y: -5 }}
-              className="relative group"
+              onMouseEnter={() => setHovered(idx)}
+              onMouseLeave={() => setHovered(null)}
+              className="group relative"
             >
               <div
-                className={`p-6 rounded-xl border transition-all duration-300 backdrop-blur-sm ${
-                  hoveredTech === idx
-                    ? 'bg-gradient-to-br from-primary/30 to-accent/30 border-primary/70 shadow-lg shadow-primary/50'
-                    : 'bg-card/50 border-border/50 hover:border-primary/50'
+                className={`flex items-center justify-center rounded-xl border px-4 py-6 text-center transition-all duration-200 ${
+                  hovered === idx
+                    ? 'glow-cyan border-[#06b6d4]/50 bg-[#06b6d4]/[0.06]'
+                    : 'border-[color:var(--hairline)] bg-[var(--fill-1)] hover:border-[color:var(--hairline-strong)]'
                 }`}
               >
-                <p className="font-semibold text-lg text-center">{tech}</p>
+                <span className="text-sm font-semibold text-foreground/90">{tech}</span>
               </div>
-
-              {/* Glow Effect on Hover */}
-              {hoveredTech === idx && (
-                <motion.div
-                  layoutId="glow"
-                  className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 blur-xl -z-10"
-                  transition={{ duration: 0.3 }}
-                />
-              )}
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Description */}
+        {/* Architecture note */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
-          className="mt-16 text-foreground/70 text-lg max-w-2xl mx-auto"
+          className="mx-auto mt-14 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground"
         >
-          Our tech choices are guided by project requirements, team expertise, and long-term maintainability. We
-          embrace polyglot development but maintain consistency in architecture patterns.
+          Our tech choices are guided by project requirements, team expertise, and
+          long-term maintainability. We embrace polyglot development while keeping
+          architecture patterns consistent.
         </motion.p>
       </div>
     </section>

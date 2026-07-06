@@ -1,16 +1,20 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'Vibeniq - Enterprise Technology & Product Engineering',
-  description: 'Enterprise applications, mobile apps and AI systems engineered for scale. We build reliable digital platforms with modern microservices and cloud-native solutions.',
-  generator: 'v0.app',
+  title: 'Vibeniq — Enterprise Technology & Product Engineering',
+  description:
+    'Enterprise applications, mobile apps and AI systems engineered for scale. Vibeniq builds reliable, production-ready digital platforms with modern microservices and cloud-native architecture.',
+  generator: 'Vibeniq',
   icons: {
     icon: '/favicon.png',
     apple: '/favicon.png',
@@ -23,9 +27,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className={`scroll-smooth ${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased bg-background text-foreground overflow-x-hidden">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
           {children}
           {process.env.NODE_ENV === 'production' && <Analytics />}
         </ThemeProvider>

@@ -1,139 +1,175 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { ArrowRight, Sparkles, Building2, Smartphone, Brain } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.15 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] as const },
+  },
+};
+
+const capabilities = [
+  { Icon: Building2, label: 'Enterprise Systems', tag: 'ERP · CRM · HRM' },
+  { Icon: Smartphone, label: 'Mobile Application', tag: 'iOS · Android' },
+  { Icon: Brain, label: 'AI & Automation', tag: 'GenAI · Chatbots' },
+];
+
+const expertise = [
+  { label: 'Backend & APIs', level: 99 },
+  { label: 'UI/UX', level: 95 },
+  { label: 'AI & Data', level: 95 },
+];
 
 export function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  };
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background Elements */}
-      <motion.div
-        className="absolute top-20 right-10 w-96 h-96 rounded-full blur-3xl opacity-20 bg-primary"
-        animate={{
-          x: scrollY * 0.5,
-          y: scrollY * 0.3,
-        }}
-      />
-
-      <motion.div
-        className="absolute bottom-32 left-10 w-80 h-80 rounded-full blur-3xl opacity-20 bg-accent"
-        animate={{
-          x: -scrollY * 0.3,
-          y: scrollY * 0.5,
-        }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+    <section
+      id="home"
+      className="relative flex min-h-screen items-center overflow-hidden pt-28 pb-20"
+    >
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Left — copy */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="text-center space-y-8"
+          className="flex flex-col items-start gap-7"
         >
-          {/* Badge */}
-          <motion.div variants={itemVariants} className="inline-flex">
-            <div className="glass-effect px-4 py-2 rounded-full">
-              <p className="text-sm font-medium text-primary">Building the future of technology</p>
+          <motion.div variants={itemVariants}>
+            <div className="glass inline-flex items-center gap-2 rounded-full px-3 py-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-primary" strokeWidth={1.5} />
+              <span className="text-[12px] font-medium text-muted-foreground">
+                Enterprise engineering, built to scale
+              </span>
             </div>
           </motion.div>
 
-          {/* Main Heading */}
-          <motion.div variants={itemVariants}>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-balance leading-tight text-foreground">
-              Enterprise applications, mobile apps and AI systems{' '}
-              <span className="text-primary">engineered for scale</span>.
-            </h1>
-          </motion.div>
+          <motion.h1
+            variants={itemVariants}
+            className="text-balance text-5xl font-semibold leading-[1.02] tracking-[-0.025em] text-foreground md:text-6xl lg:text-[64px]"
+          >
+            Enterprise apps, mobile &amp; AI systems{' '}
+            <span className="gradient-text">engineered for scale</span>.
+          </motion.h1>
 
-          {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-lg md:text-xl text-foreground/60 max-w-3xl mx-auto text-balance"
+            className="max-w-xl text-balance text-base leading-relaxed text-muted-foreground md:text-lg"
           >
-            We build reliable digital platforms engineered for scale with modern microservices, cloud-native solutions, and proven engineering practices.
+            Vibeniq designs, builds, and operates production-ready platforms — ERP,
+            CRM, HRM, mobile, AI, and cloud-native systems — with modern microservices
+            and pragmatic engineering.
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-            <motion.a
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3 pt-1">
+            <a
               href="#services"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 rounded-lg bg-primary text-white font-semibold hover:shadow-lg hover:shadow-primary/50 transition-all duration-300"
+              className="btn-primary inline-flex items-center gap-2 px-5 py-3 text-sm"
             >
-              Our Services
-            </motion.a>
-            <motion.a
-              href="#about"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 rounded-lg border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-all duration-300"
-            >
+              Explore Services
+              <ArrowRight className="h-4 w-4" strokeWidth={2} />
+            </a>
+            <a href="#about" className="btn-secondary px-5 py-3 text-sm">
               Who We Are
-            </motion.a>
-          </motion.div>
-
-          {/* Feature List */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-8 justify-center pt-12 max-w-3xl mx-auto"
-          >
-            {[
-              'Production-ready Microservices & CI/CD',
-              'Cross-platform Mobile Apps',
-              'AI & Automation for Business',
-            ].map((feature, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -5 }}
-                className="flex items-center gap-3 text-sm md:text-base"
-              >
-                <div className="w-2 h-2 rounded-full bg-primary" />
-                <span>{feature}</span>
-              </motion.div>
-            ))}
+            </a>
           </motion.div>
         </motion.div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-      >
-        <div className="w-6 h-10 border border-primary/50 rounded-full flex items-start justify-center p-2">
-          <motion.div className="w-1 h-2 bg-primary rounded-full" animate={{ y: [0, 6, 0] }} transition={{ duration: 2, repeat: Infinity }} />
-        </div>
-      </motion.div>
+        {/* Right — gradient-shell preview panel */}
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          className="relative"
+        >
+          <div className="shell shell-accent glow-deep">
+            <div className="shell-inner shell-glass p-5">
+              {/* window chrome */}
+              <div className="mb-5 flex items-center justify-between border-b border-[color:var(--hairline)] pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#34d399]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#06b6d4]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-foreground/20" />
+                </div>
+                <span className="text-[11px] font-medium tracking-wide text-muted-foreground">
+                  vibeniq · what we build
+                </span>
+              </div>
+
+              <div className="space-y-2.5">
+                {capabilities.map(({ Icon, label, tag }, idx) => (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 + idx * 0.12 }}
+                    className="flex items-center justify-between rounded-lg border border-[color:var(--hairline)] bg-[var(--fill-1)] px-3.5 py-3"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#34d399]/10">
+                        <Icon className="h-4 w-4 text-primary" strokeWidth={1.5} />
+                      </span>
+                      <span className="text-[13px] font-medium text-foreground/90">{label}</span>
+                    </div>
+                    <span className="rounded-full bg-[#06b6d4]/10 px-2.5 py-1 text-[11px] font-medium text-secondary">
+                      {tag}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* expertise breakdown */}
+              <div className="mt-5 rounded-lg border border-[color:var(--hairline)] bg-[var(--fill-1)] p-4">
+                <div className="mb-3 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  Core expertise
+                </div>
+                <div className="space-y-3">
+                  {expertise.map(({ label, level }, i) => (
+                    <div key={label}>
+                      <div className="mb-1.5 flex items-center justify-between text-[12px]">
+                        <span className="text-foreground/80">{label}</span>
+                        <span className="text-primary">{level}%</span>
+                      </div>
+                      <div className="h-1.5 overflow-hidden rounded-full bg-[var(--fill-2)]">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${level}%` }}
+                          transition={{ duration: 0.8, delay: 0.9 + i * 0.15, ease: [0.4, 0, 0.2, 1] }}
+                          className="h-full rounded-full bg-gradient-to-r from-[#06b6d4] to-[#34d399]"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* floating brand badge — links to contact */}
+          <a
+            href="#contact"
+            aria-label="Start a project with Vibeniq"
+            title="Start a project"
+            className="animate-float glow-cyan group absolute -bottom-14 -left-6 hidden h-20 w-20 flex-col items-center justify-center gap-0.5 rounded-2xl border border-[color:var(--hairline)] bg-background/90 backdrop-blur-xl transition-colors duration-150 hover:border-[#06b6d4]/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#06b6d4]/60 sm:flex"
+          >
+            <span className="gradient-text text-xl font-semibold leading-none">V</span>
+            <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground transition-colors duration-150 group-hover:text-secondary">
+              Let&apos;s talk
+            </span>
+          </a>
+        </motion.div>
+      </div>
     </section>
   );
 }

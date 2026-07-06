@@ -1,249 +1,160 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import React from 'react';
+import { motion, type Transition } from 'framer-motion';
+import { Rocket, Target, Lightbulb, Zap, TrendingUp, Handshake } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] as const },
+  },
+};
+
+const pillars = [
+  {
+    Icon: Rocket,
+    title: 'Our Story',
+    body: 'Founded by engineers and product builders who believe enterprise software can be elegant and reliable. We help companies modernize their digital platforms with conviction and care.',
+  },
+  {
+    Icon: Target,
+    title: 'Our Mission',
+    body: 'Deliver secure, maintainable, and scalable solutions using best-of-breed technologies and pragmatic engineering — measured by the reliability of what we ship together.',
+  },
+  {
+    Icon: Lightbulb,
+    title: 'Core Expertise',
+    body: 'Deep experience across scalable backends, cloud-native architectures, AI integration, and DevOps & SRE — the engineering foundations that keep production systems fast, secure, and resilient at scale.',
+  },
+];
+
+type ValueItem = {
+  Icon: React.ElementType;
+  title: string;
+  description: string;
+  idleAnimate: Record<string, number[]>;
+  idleTransition: Transition;
+};
+
+const valueItems: ValueItem[] = [
+  {
+    Icon: Zap,
+    title: 'Reliability',
+    description:
+      'Systems engineered for consistency and high availability under demanding conditions.',
+    idleAnimate: { scale: [1, 1.15, 1], opacity: [1, 0.7, 1] },
+    idleTransition: { duration: 2, repeat: Infinity, delay: 0 },
+  },
+  {
+    Icon: TrendingUp,
+    title: 'Scalability',
+    description:
+      'Architectures built to grow with your business, handling 10x traffic without redesign.',
+    idleAnimate: { y: [0, -6, 0] },
+    idleTransition: { duration: 3, repeat: Infinity, delay: 0.4 },
+  },
+  {
+    Icon: Handshake,
+    title: 'Partnership',
+    description:
+      'Long-term collaboration built on trust, transparency, and shared success metrics.',
+    idleAnimate: { rotate: [-5, 5, -5] },
+    idleTransition: { duration: 3, repeat: Infinity, delay: 0.8 },
+  },
+];
 
 export function About() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
-  const rotateZ = useTransform(scrollYProgress, [0, 1], [0, 5]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
-    },
-  };
-
-  const valueItems = [
-    {
-      title: 'Reliability',
-      icon: '⚡',
-      description: 'Systems engineered for consistency and high availability under demanding conditions.',
-    },
-    {
-      title: 'Scalability',
-      icon: '📈',
-      description: 'Architectures built to grow with your business, handling 10x traffic without redesign.',
-    },
-    {
-      title: 'Partnership',
-      icon: '🤝',
-      description: 'Long-term collaboration built on trust, transparency, and shared success metrics.',
-    },
-  ];
-
   return (
-    <section id="about" ref={containerRef} className="relative py-32 px-6 overflow-hidden">
-      {/* Animated Background Gradient */}
-      <motion.div
-        className="absolute inset-0 opacity-40"
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 80%, rgba(32, 180, 160, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 20%, rgba(32, 180, 160, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 80%, rgba(32, 180, 160, 0.15) 0%, transparent 50%)',
-          ],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Section Header with Scroll Animation */}
+    <section id="about" className="relative overflow-hidden py-26 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        {/* Header */}
         <motion.div
-          style={{ opacity, scale, rotateZ }}
-          className="text-center mb-24"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <motion.h2
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-6xl md:text-7xl font-bold text-balance mb-6"
-          >
-            About <span className="text-primary">Vibeniq</span>
-          </motion.h2>
-          <motion.p
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ delay: 0.1 }}
-            className="text-xl text-foreground/70 max-w-3xl mx-auto text-balance"
-          >
-            We combine engineering discipline with product sensibility to build systems that scale.
-          </motion.p>
+          <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--hairline)] bg-[var(--fill-2)] px-3 py-1 text-[12px] font-medium uppercase tracking-wider text-secondary">
+            About
+          </span>
+          <h2 className="mt-5 text-balance text-4xl font-semibold tracking-[-0.025em] md:text-5xl">
+            About <span className="gradient-text">Vibeniq</span>
+          </h2>
+          <p className="mt-4 text-balance text-base text-muted-foreground md:text-lg">
+            We combine engineering discipline with product sensibility to build systems
+            that scale.
+          </p>
         </motion.div>
 
-        {/* Main Content Grid */}
+        {/* Story / Mission / Expertise */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24"
+          className="mb-20 grid grid-cols-1 gap-5 lg:grid-cols-3"
         >
-          {/* Story Card */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <motion.div
-              whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(32, 180, 160, 0.15)' }}
-              className="h-full p-8 rounded-2xl border border-primary/30 bg-card/80 backdrop-blur-sm transition-all duration-300"
-            >
-              <motion.div
-                animate={{ rotate: [0, 5, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="text-5xl mb-6"
-              >
-                🚀
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-4">Our Story</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                Founded by engineers and product builders who believe enterprise software can be elegant and reliable. We help companies modernize their digital platforms with conviction and care.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Mission Card */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <motion.div
-              whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(32, 180, 160, 0.15)' }}
-              className="h-full p-8 rounded-2xl border border-primary/30 bg-card/80 backdrop-blur-sm transition-all duration-300"
-            >
-              <motion.div
-                animate={{ rotate: [0, -5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 0.2 }}
-                className="text-5xl mb-6"
-              >
-                🎯
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
-              <p className="text-foreground/70 leading-relaxed">
-                Be the trusted engineering partner for enterprises transforming digitally. We measure success by the reliability and impact of systems we build together.
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Expertise Card */}
-          <motion.div variants={itemVariants} className="lg:col-span-1">
-            <motion.div
-              whileHover={{ y: -8, boxShadow: '0 20px 40px rgba(32, 180, 160, 0.15)' }}
-              className="h-full p-8 rounded-2xl border border-primary/30 bg-card/80 backdrop-blur-sm transition-all duration-300"
-            >
-              <motion.div
-                animate={{ rotate: [0, 5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 0.4 }}
-                className="text-5xl mb-6"
-              >
-                💡
-              </motion.div>
-              <h3 className="text-2xl font-bold mb-4">Core Expertise</h3>
-              <ul className="space-y-3">
-                {[
-                  'Scalable backends',
-                  'Cloud architectures',
-                  'AI integration',
-                  'DevOps & SRE',
-                ].map((item, idx) => (
-                  <motion.li
-                    key={idx}
-                    whileHover={{ x: 8 }}
-                    className="text-foreground/70 flex items-center gap-3 font-medium"
-                  >
-                    <motion.span
-                      animate={{ scale: [1, 1.3, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: idx * 0.1 }}
-                      className="w-2 h-2 rounded-full bg-primary flex-shrink-0"
-                    />
-                    {item}
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-
-        {/* Core Values Section */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: '-100px' }}
-          className="mb-16"
-        >
-          <motion.h3
-            variants={itemVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16 text-balance"
-          >
-            Our Core <span className="text-primary">Values</span>
-          </motion.h3>
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {valueItems.map((value, idx) => (
-              <motion.div
-                key={idx}
-                variants={itemVariants}
-                whileHover={{ y: -12 }}
-                className="relative group"
-              >
-                {/* Background gradient on hover */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  layoutId={`value-bg-${idx}`}
-                />
-
-                {/* Card Content */}
-                <div className="relative p-10 rounded-2xl border border-primary/40 bg-white/50 backdrop-blur-sm h-full">
-                  <motion.div
-                    animate={{ y: [0, -5, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, delay: idx * 0.2 }}
-                    className="text-6xl mb-6"
-                  >
-                    {value.icon}
-                  </motion.div>
-                  <h4 className="text-2xl font-bold mb-3 text-foreground">{value.title}</h4>
-                  <p className="text-foreground/70 leading-relaxed">{value.description}</p>
-
-                  {/* Animated Bottom Border */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full"
-                    initial={{ width: '0%' }}
-                    whileHover={{ width: '100%' }}
-                    transition={{ duration: 0.4 }}
-                  />
+          {pillars.map(({ Icon, title, body }) => (
+            <motion.div key={title} variants={itemVariants} className="group">
+              <div className="shell h-full transition-transform duration-200 group-hover:-translate-y-1">
+                <div className="shell-inner shell-glass h-full p-7">
+                  <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[#34d399]/10">
+                    <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+                  </span>
+                  <h3 className="mb-3 text-xl font-semibold">{title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{body}</p>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
 
+        {/* Core Values */}
+        <motion.h3
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mb-12 text-center text-3xl font-semibold tracking-[-0.025em] md:text-4xl"
+        >
+          Our Core <span className="gradient-text">Values</span>
+        </motion.h3>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          className="grid grid-cols-1 gap-5 md:grid-cols-3"
+        >
+          {valueItems.map(({ Icon, title, description, idleAnimate, idleTransition }) => (
+            <motion.div key={title} variants={itemVariants} className="group">
+              <div className="shell h-full transition-transform duration-200 group-hover:-translate-y-1">
+                <div className="shell-inner shell-glass relative h-full overflow-hidden p-8">
+                  <motion.div
+                    className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[#34d399]/10"
+                    animate={idleAnimate}
+                    transition={idleTransition}
+                  >
+                    <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+                  </motion.div>
+                  <h4 className="mb-3 text-xl font-semibold">{title}</h4>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{description}</p>
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary to-secondary transition-all duration-300 group-hover:w-full" />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
