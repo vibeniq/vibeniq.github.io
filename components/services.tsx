@@ -1,121 +1,137 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Building2, Brain, Smartphone, Users, CheckCircle2, ArrowRight } from 'lucide-react';
+import {
+  Building2,
+  Brain,
+  Smartphone,
+  ShoppingCart,
+  Cloud,
+  Users,
+  ArrowUpRight,
+} from 'lucide-react';
 
 const services = [
   {
     Icon: Building2,
-    title: 'Enterprise Applications',
+    title: 'Enterprise Systems',
     description:
-      'Comprehensive ERP, CRM, HRM, and E-commerce solutions for streamlined business operations.',
-    features: ['ERP Systems', 'CRM Platforms', 'HRM Solutions', 'E-commerce Stores'],
+      'Configurable ERP, CRM, and HRM platforms for finance, supply chain, payroll, and operations.',
+    features: ['ERP & Finance', 'CRM & Sales', 'HRM & Payroll'],
   },
   {
     Icon: Brain,
-    title: 'AI Applications',
+    title: 'AI & Automation',
     description:
-      'Intelligent AI solutions and conversational chatbots powered by cutting-edge machine learning.',
-    features: ['Machine Learning', 'AI Chatbots', 'Predictive Analytics', 'Neural Networks'],
+      'Conversational assistants, recommendation engines, and business process automation.',
+    features: ['AI Chatbots', 'Recommendation Engines', 'Process Automation'],
   },
   {
     Icon: Smartphone,
     title: 'Mobile Development',
     description:
-      'Cross-platform mobile applications with native performance and seamless user experiences.',
-    features: ['iOS & Android', 'React Native', 'Flutter', 'Progressive Web Apps'],
+      'Native and cross-platform apps for Android and iOS with production-grade performance.',
+    features: ['iOS & Android', 'React Native', 'Progressive Web Apps'],
+  },
+  {
+    Icon: ShoppingCart,
+    title: 'E-commerce',
+    description:
+      'Scalable storefronts and marketplaces built to convert and to grow with demand.',
+    features: ['Storefronts', 'Marketplaces', 'Payments & Checkout'],
+  },
+  {
+    Icon: Cloud,
+    title: 'DevOps & Cloud Native',
+    description:
+      'Docker, Kubernetes, CI/CD, monitoring, and cloud operations for reliable delivery.',
+    features: ['Kubernetes & CI/CD', 'Observability', 'Cloud Operations'],
   },
   {
     Icon: Users,
-    title: 'Technical Consultancies',
+    title: 'On-demand Software',
     description:
-      'Expert technology consulting services to guide your digital transformation journey.',
-    features: [
-      'Architecture Design',
-      'Technology Strategy',
-      'Digital Transformation',
-      'Performance Optimization',
-    ],
+      'Bespoke solutions tailored to your business — from architecture to long-term operation.',
+    features: ['Custom Software', 'Architecture Design', 'Technical Consulting'],
   },
 ];
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55 } },
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const },
+  },
 };
 
 export function Services() {
   return (
-    <section id="services" className="relative py-24 px-6 overflow-hidden">
-      <div className="relative z-10 max-w-5xl mx-auto">
-        {/* Section Header */}
+    <section id="services" className="relative overflow-hidden py-26 md:py-32">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mx-auto mb-16 max-w-2xl text-center"
         >
-          <h2 className="text-5xl md:text-6xl font-bold mb-4 text-balance">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[color:var(--hairline)] bg-[var(--fill-2)] px-3 py-1 text-[12px] font-medium uppercase tracking-wider text-secondary">
+            What we do
+          </span>
+          <h2 className="mt-5 text-balance text-4xl font-semibold tracking-[-0.025em] md:text-5xl">
             <span className="gradient-text">Services</span> for every scale
           </h2>
-          <p className="text-lg text-foreground/60 max-w-2xl mx-auto text-balance">
-            End-to-end product and platform engineering across industries.
+          <p className="mt-4 text-balance text-base text-muted-foreground md:text-lg">
+            End-to-end product and platform engineering — from first line of code to
+            production operations.
           </p>
         </motion.div>
 
-        {/* 2×2 Grid */}
+        {/* Grid */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {services.map(({ Icon, title, description, features }, idx) => (
-            <motion.div
-              key={idx}
-              variants={cardVariants}
-              whileHover="hover"
-              className="group relative rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm p-8 flex flex-col gap-6 transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/10"
-            >
-              {/* Icon */}
-              <motion.div
-                className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 2.8 + idx * 0.3, repeat: Infinity, delay: idx * 0.45 }}
-                variants={{ hover: { scale: 1.18, y: -8 } }}
-              >
-                <Icon className="w-7 h-7 text-primary" strokeWidth={1.5} />
-              </motion.div>
+          {services.map(({ Icon, title, description, features }) => (
+            <motion.div key={title} variants={cardVariants} className="group">
+              <div className="shell h-full transition-transform duration-200 group-hover:-translate-y-1">
+                <div className="shell-inner shell-glass flex h-full flex-col gap-5 p-6 transition-colors duration-200 group-hover:bg-background/40">
+                  <div className="flex items-center justify-between">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#34d399]/10 transition-colors duration-200 group-hover:bg-[#34d399]/15">
+                      <Icon className="h-6 w-6 text-primary" strokeWidth={1.5} />
+                    </span>
+                    <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-secondary" />
+                  </div>
 
-              {/* Text */}
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold">{title}</h3>
-                <p className="text-foreground/60 text-sm leading-relaxed">{description}</p>
-              </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {description}
+                    </p>
+                  </div>
 
-              {/* Feature list */}
-              <ul className="flex flex-col gap-2">
-                {features.map((feat) => (
-                  <li key={feat} className="flex items-center gap-2.5 text-sm text-foreground/80">
-                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" strokeWidth={2} />
-                    {feat}
-                  </li>
-                ))}
-              </ul>
-
-              {/* Learn More */}
-              <div className="mt-auto pt-2">
-                <button className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-primary transition-colors duration-200">
-                  Learn More
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                  <ul className="mt-auto flex flex-col gap-2 border-t border-[color:var(--hairline)] pt-4">
+                    {features.map((feat) => (
+                      <li
+                        key={feat}
+                        className="flex items-center gap-2.5 text-[13px] text-foreground/80"
+                      >
+                        <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-secondary" />
+                        {feat}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </motion.div>
           ))}
